@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Register Student</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+ <form id="studentForm">
+ <label for="name">Name:</label>
+ <input type="text" id="name" name="name" required>
+ <button type="submit">Register</button>
+ </form>
+
+ <script>
+ $(document).ready(function() {
+ $('#studentForm').on('submit', function(e) {
+ e.preventDefault();
+ $.ajax({
+ type: 'POST',
+ url: '{% url "register_student" %}',
+ data: {
+ 'name': $('#name').val(),
+ csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+ },
+ success: function(response) {
+ alert(response.message);
+ $('#studentForm')[0].reset();
+ },
+ error: function(xhr, errmsg, err) {
+ alert("Could not send data: " + errmsg);
+ }
+ });
+ });
+ });
+ </script>
+</body>
+</html>

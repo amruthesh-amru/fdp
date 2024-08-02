@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Student Course Search</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+ <input type="text" id="searchQuery" placeholder="Search students...">
+ <ul id="results"></ul>
+
+ <script>
+ $(document).ready(function() {
+ $('#searchQuery').on('keyup', function() {
+ $.ajax({
+ type: 'GET',
+ url: '{% url "search_students" %}',
+ data: {
+ 'query': $(this).val()
+ },
+ dataType: 'json',
+ success: function(response) {
+ $('#results').empty();
+ response.forEach(function(student) {
+ $('#results').append(`<li>${student.name}</li>`);
+ });
+ },
+ error: function(xhr, errmsg, err) {
+ console.log("No data found: " + errmsg);
+ }
+ });
+ });
+ });
+ </script>
+</body>
+</html>
